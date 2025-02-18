@@ -16,6 +16,11 @@ model Post {
   is_published Boolean  @default(false)
   created_at   DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  // relations
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map("posts")
 }
 
 model User {
@@ -24,4 +29,24 @@ model User {
   password   String
   created_at DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  posts      Post[]
+  profile    Profile?
+
+  @@map("users")
+}
+
+model Profile {
+  id         String   @id @default(uuid())
+  first_name String
+  last_name  String
+  avatar     String?
+  bio        String?
+  userId     String   @unique
+  created_at DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // relations 
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("profiles")
 }
