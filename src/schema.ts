@@ -9,7 +9,7 @@ type Query {
     id: ID!
     title: String!
     content: String!
-    author: User
+    author: User!
     is_published: Boolean!
     created_at: String!
   }
@@ -17,7 +17,6 @@ type Query {
   type User {
     id: ID!
     email: String!
-    password: String!
     created_at: String!
     posts: [Post]
   }
