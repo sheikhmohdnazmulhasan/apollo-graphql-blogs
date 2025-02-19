@@ -11,6 +11,6 @@ const books = [
 
 export const resolvers = {
   Query: {
-    books: () => books,
+    user: () => books,
   },
 };
