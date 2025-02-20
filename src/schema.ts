@@ -1,9 +1,16 @@
 export const typeDefs = `#graphql
 
-type Query {
+   type Query {
     user: User
     posts: [Post]
-}
+    }
+
+    type Mutation {
+    createUser(
+      email: String!
+      password: String!
+      ): User
+    }
 
   type Post {
     id: ID!
