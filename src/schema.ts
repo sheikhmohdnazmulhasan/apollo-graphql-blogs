@@ -1,17 +1,20 @@
 export const typeDefs = `#graphql
 
+# This is the Query type
    type Query {
     user: User
     posts: [Post]
     }
 
     type Mutation {
+    # This is the mutation to create a new user
     createUser(
       email: String!
       password: String!
       ): User
     }
 
+  # This is the Post type
   type Post {
     id: ID!
     title: String!
@@ -21,6 +24,7 @@ export const typeDefs = `#graphql
     created_at: String!
   }
 
+  # This is the User type
   type User {
     id: ID!
     email: String!
@@ -28,6 +32,7 @@ export const typeDefs = `#graphql
     posts: [Post]
   }
 
+  # This is the Profile type
   type Profile {
     id: ID!
     first_name: String!
