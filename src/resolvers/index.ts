@@ -1,3 +1,5 @@
+import prisma from "../db/prisma";
+
 export const resolvers = {
   // This is the Query resolver
   Query: {},
@@ -6,7 +8,7 @@ export const resolvers = {
   Mutation: {
     // This is the resolver for the createUser mutation
     createUser: async (parent: any, args: any, context: any, info: any) => {
-      return await context.prisma.user.create({
+      return await prisma.user.create({
         data: args,
       });
     },
