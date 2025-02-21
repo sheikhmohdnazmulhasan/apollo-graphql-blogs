@@ -1,8 +1,9 @@
 export const typeDefs = `#graphql
 
-# This is the Query type
+  # This is the Query type
    type Query {
     user: User
+    users: [User]
     posts: [Post]
     }
 

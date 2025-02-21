@@ -2,7 +2,11 @@ import prisma from "../db/prisma";
 
 export const resolvers = {
   // This is the Query resolver
-  Query: {},
+  Query: {
+    users: async (parent: any, args: any, context: any, info: any) => {
+      return await prisma.user.findMany();
+    },
+  },
 
   // This is the Mutation resolver
   Mutation: {
