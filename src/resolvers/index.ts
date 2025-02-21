@@ -1,4 +1,5 @@
 import prisma from "../db/prisma";
+import bcrypt from "bcryptjs";
 
 export const resolvers = {
   // This is the Query resolver
@@ -12,8 +13,13 @@ export const resolvers = {
   Mutation: {
     // This is the resolver for the createUser mutation
     createUser: async (parent: any, args: any, context: any, info: any) => {
+      const hashedPassword = await bcrypt.hash(args.password, 10);
+
       return await prisma.user.create({
-        data: args,
+        data: {
+          password: hashedPassword,
+          ...args,
+        },
       });
     },
   },
