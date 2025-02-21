@@ -12,7 +12,12 @@ export const typeDefs = `#graphql
     createUser(
       email: String!
       password: String!
-      ): User
+      ): newUser
+    }
+
+    type newUser {
+      message: String! 
+      token: String!
     }
 
   # This is the Post type

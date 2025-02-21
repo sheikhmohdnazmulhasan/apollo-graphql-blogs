@@ -1,5 +1,6 @@
 import prisma from "../db/prisma";
 import bcrypt from "bcryptjs";
+import { signToken } from "../utils/sign-token";
 
 export const resolvers = {
   // This is the Query resolver
@@ -15,12 +16,21 @@ export const resolvers = {
     createUser: async (parent: any, args: any, context: any, info: any) => {
       const hashedPassword = await bcrypt.hash(args.password, 10);
 
-      return await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           password: hashedPassword,
           ...args,
         },
       });
+
+      if (!newUser) {
+        throw new Error("User not created");
+      }
+
+      return {
+        message: "User created successfully",
+        token: signToken({ userId: newUser.id }),
+      };
     },
   },
 };
