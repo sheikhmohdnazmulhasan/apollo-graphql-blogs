@@ -18,7 +18,7 @@ export const typeDefs = `#graphql
     loginUser(
       email: String!
       password: String!
-      ): authPayload
+    ): authPayload
     }
 
     

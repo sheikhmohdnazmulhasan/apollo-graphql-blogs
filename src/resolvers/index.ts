@@ -17,8 +17,8 @@ export const resolvers = {
       const hashedPassword = await bcrypt.hash(args.password, 10);
       const newUser = await prisma.user.create({
         data: {
-          password: hashedPassword,
           ...args,
+          password: hashedPassword,
         },
       });
 
@@ -29,6 +29,28 @@ export const resolvers = {
       return {
         message: "User created successfully",
         token: signToken({ userId: newUser.id }),
+      };
+    },
+
+    // This is the resolver for the loginUser mutation
+    loginUser: async (parent: any, args: any, context: any, info: any) => {
+      const user = await prisma.user.findUnique({
+        where: { email: args.email },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const isValid = await bcrypt.compare(args.password, user.password);
+
+      if (!isValid) {
+        throw new Error("Invalid password");
+      }
+
+      return {
+        message: "User logged in successfully",
+        token: signToken({ userId: user.id }),
       };
     },
   },
