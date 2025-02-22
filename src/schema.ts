@@ -12,10 +12,18 @@ export const typeDefs = `#graphql
     createUser(
       email: String!
       password: String!
-      ): newUser
+      ): authPayload
+
+    # This is the mutation to login a user
+    loginUser(
+      email: String!
+      password: String!
+      ): authPayload
     }
 
-    type newUser {
+    
+    # This is the authPayload type
+    type authPayload {
       message: String! 
       token: String!
     }

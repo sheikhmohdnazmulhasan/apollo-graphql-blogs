@@ -15,7 +15,6 @@ export const resolvers = {
     // This is the resolver for the createUser mutation
     createUser: async (parent: any, args: any, context: any, info: any) => {
       const hashedPassword = await bcrypt.hash(args.password, 10);
-
       const newUser = await prisma.user.create({
         data: {
           password: hashedPassword,
