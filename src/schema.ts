@@ -1,32 +1,45 @@
 export const typeDefs = `#graphql
 
   # This is the Query type
-   type Query {
+  type Query {
     user: User
     users: [User]
     posts: [Post]
-    }
+  }
 
-    type Mutation {
+  type Mutation {
     # This is the mutation to create a new user
     createUser(
-      email: String!
-      password: String!
-      ): authPayload
+      userData: UserInput!
+      profileData: ProfileInput!
+    ): AuthPayload
 
     # This is the mutation to login a user
     loginUser(
       email: String!
       password: String!
-    ): authPayload
-    }
+    ): AuthPayload
+  }
 
-    
-    # This is the authPayload type
-    type authPayload {
-      message: String! 
-      token: String!
-    }
+  # This is the UserInput type
+  input UserInput {
+    email: String!
+    password: String!
+  }
+
+  # This is the ProfileInput type
+  input ProfileInput {
+    first_name: String!
+    last_name: String!
+    avatar: String
+    bio: String
+  }
+
+  # This is the AuthPayload type
+  type AuthPayload {
+    message: String!
+    token: String!
+  }
 
   # This is the Post type
   type Post {
@@ -53,6 +66,6 @@ export const typeDefs = `#graphql
     last_name: String!
     avatar: String
     bio: String
-    user: User
+    user: User!
   }
 `;
