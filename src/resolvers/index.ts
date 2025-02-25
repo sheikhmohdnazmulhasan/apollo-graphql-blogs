@@ -18,7 +18,19 @@ export const resolvers = {
     createUser: async (parent: any, args: INewUser, context: any) => {
       const { userData, profileData } = args;
 
+      // Check if the user already exists
+      const user = await prisma.user.findUnique({
+        where: { email: userData.email },
+      });
+
+      if (user) {
+        throw new Error("User already exists");
+      }
+
+      // Hash the password
       const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+      // Create the user
       const newUser = await prisma.user.create({
         data: {
           ...userData,
@@ -26,12 +38,21 @@ export const resolvers = {
         },
       });
 
+      // Check if the user was created
       if (!newUser) {
         throw new Error("User not created");
       }
 
-      console.log({ newUser });
+      // Create the user profile after the user is created
+      await prisma.profile.create({
+        data: {
+          ...profileData,
+          userId: newUser.id,
+        },
+      });
 
+      // Log the user creation
+      logger.info(`User created: ${newUser.email}`);
       return {
         message: "User created successfully",
         token: signToken({ userId: newUser.id }),
