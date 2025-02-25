@@ -27,36 +27,42 @@ export const resolvers = {
         throw new Error("User already exists");
       }
 
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
+      // Create the user and profile try block
+      try {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-      // Create the user
-      const newUser = await prisma.user.create({
-        data: {
-          ...userData,
-          password: hashedPassword,
-        },
-      });
+        // Create the user
+        const newUser = await prisma.user.create({
+          data: {
+            ...userData,
+            password: hashedPassword,
+          },
+        });
 
-      // Check if the user was created
-      if (!newUser) {
-        throw new Error("User not created");
+        // Check if the user was created
+        if (!newUser) {
+          throw new Error("User not created");
+        }
+
+        // Create the user profile after the user is created
+        await prisma.profile.create({
+          data: {
+            ...profileData,
+            userId: newUser.id,
+          },
+        });
+
+        // Log the user creation
+        logger.info(`User created: ${newUser.email}`);
+        return {
+          message: "User created successfully",
+          token: signToken({ userId: newUser.id }),
+        };
+      } catch (error) {
+        logger.error(`❌ Error creating user: ${error}`);
+        throw new Error("Error creating user");
       }
-
-      // Create the user profile after the user is created
-      await prisma.profile.create({
-        data: {
-          ...profileData,
-          userId: newUser.id,
-        },
-      });
-
-      // Log the user creation
-      logger.info(`User created: ${newUser.email}`);
-      return {
-        message: "User created successfully",
-        token: signToken({ userId: newUser.id }),
-      };
     },
 
     // This is the resolver for the loginUser mutation
