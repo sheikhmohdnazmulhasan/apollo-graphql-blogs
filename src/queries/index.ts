@@ -1,7 +1,7 @@
-import prisma from "../db/prisma";
+import { IContext } from "../interfaces";
 
 export const Query = {
-  users: async (parent: any, args: any, context: any, info: any) => {
+  users: async (parent: any, args: any, { prisma }: IContext, info: any) => {
     return await prisma.user.findMany();
   },
 };
