@@ -3,6 +3,8 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import logger from "./utils/logger";
 import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
+import prisma from "./db/prisma";
+import { IContext } from "./interfaces";
 
 (async function () {
   try {
@@ -15,6 +17,11 @@ import { resolvers } from "./resolvers";
 
     const { url } = await startStandaloneServer(server, {
       listen: { port: 4000 },
+      context: async (): Promise<IContext> => {
+        return {
+          prisma,
+        };
+      },
     });
 
     logger.info(`🚀 Server is running at: ${url}`);
