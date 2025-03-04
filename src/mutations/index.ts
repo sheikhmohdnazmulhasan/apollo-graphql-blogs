@@ -1,12 +1,11 @@
-import prisma from "../db/prisma";
-import { INewUser } from "../interfaces";
+import { IContext, INewUser } from "../interfaces";
 import bcrypt from "bcryptjs";
 import logger from "../utils/logger";
 import { signToken } from "../utils/sign-token";
 
 export const Mutation = {
   // This is the resolver for the createUser mutation
-  createUser: async (parent: any, args: INewUser, context: any) => {
+  createUser: async (parent: any, args: INewUser, { prisma }: IContext) => {
     const { userData, profileData } = args;
 
     // Check if the user already exists
@@ -57,7 +56,12 @@ export const Mutation = {
   },
 
   // This is the resolver for the loginUser mutation
-  loginUser: async (parent: any, args: any, context: any, info: any) => {
+  loginUser: async (
+    parent: any,
+    args: any,
+    { prisma }: IContext,
+    info: any
+  ) => {
     const user = await prisma.user.findUnique({
       where: { email: args.email },
     });
