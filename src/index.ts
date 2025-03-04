@@ -15,6 +15,10 @@ import { IContext } from "./interfaces";
       resolvers,
     });
 
+    // Start the server
+    // The server will listen on port 4000
+    // The context function will return the Prisma client
+    // to the context of the Apollo Server
     const { url } = await startStandaloneServer(server, {
       listen: { port: 4000 },
       context: async (): Promise<IContext> => {
