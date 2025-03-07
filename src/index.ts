@@ -21,7 +21,8 @@ import { IContext } from "./interfaces";
     // to the context of the Apollo Server
     const { url } = await startStandaloneServer(server, {
       listen: { port: 4000 },
-      context: async (): Promise<IContext> => {
+      context: async ({ req }): Promise<IContext> => {
+        console.log(req.headers.authorization);
         return {
           prisma,
         };
