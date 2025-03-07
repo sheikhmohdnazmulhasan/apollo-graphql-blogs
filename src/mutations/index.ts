@@ -82,7 +82,7 @@ export const Mutation = {
     };
   },
 
-  addPost: async (parent: any, args: any, { prisma }: IContext) => {
-    console.log(args);
+  addPost: async (parent: any, args: any, { prisma, authUser }: IContext) => {
+    console.log(authUser);
   },
 };
