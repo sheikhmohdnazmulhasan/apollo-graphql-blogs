@@ -1,7 +1,7 @@
 import { IContext, INewUser } from "../interfaces";
 import bcrypt from "bcryptjs";
 import logger from "../utils/logger";
-import { signToken } from "../utils/sign-token";
+import { signToken } from "../utils/jwt";
 
 export const Mutation = {
   // This is the resolver for the createUser mutation
