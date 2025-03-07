@@ -81,4 +81,8 @@ export const Mutation = {
       token: signToken({ userId: user.id }),
     };
   },
+
+  addPost: async (parent: any, args: any, { prisma }: IContext) => {
+    console.log(args);
+  },
 };
