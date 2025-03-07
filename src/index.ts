@@ -5,6 +5,7 @@ import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
 import prisma from "./db/prisma";
 import { IContext } from "./interfaces";
+import { getAuthUserInfo } from "./utils/jwt";
 
 (async function () {
   try {
@@ -22,7 +23,7 @@ import { IContext } from "./interfaces";
     const { url } = await startStandaloneServer(server, {
       listen: { port: 4000 },
       context: async ({ req }): Promise<IContext> => {
-        console.log(req.headers.authorization);
+        const authUser = await getAuthUserInfo(req.headers.authorization);
         return {
           prisma,
         };
