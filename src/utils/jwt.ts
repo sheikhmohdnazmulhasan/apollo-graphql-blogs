@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config";
 import logger from "../utils/logger";
 export function signToken(payload: any) {
@@ -7,11 +7,13 @@ export function signToken(payload: any) {
   });
 }
 
-export async function getAuthUserInfo(token: string | undefined) {
+export async function getAuthUserInfo(
+  token: string | undefined
+): Promise<JwtPayload | null> {
   if (!token) return null;
 
   try {
-    return jwt.verify(token, config.JWT_SECRET!);
+    return jwt.verify(token, config.JWT_SECRET!) as JwtPayload;
   } catch (error) {
     logger.error(error);
     return null;

@@ -26,6 +26,7 @@ import { getAuthUserInfo } from "./utils/jwt";
         const authUser = await getAuthUserInfo(req.headers.authorization);
         return {
           prisma,
+          authUser,
         };
       },
     });
