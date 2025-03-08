@@ -2,6 +2,7 @@ import { IContext, INewUser } from "../interfaces";
 import bcrypt from "bcryptjs";
 import logger from "../utils/logger";
 import { signToken } from "../utils/jwt";
+import { postResolvers } from "./post";
 
 export const Mutation = {
   // This is the resolver for the createUser mutation
@@ -82,27 +83,5 @@ export const Mutation = {
     };
   },
 
-  addPost: async (parent: any, args: any, { prisma, authUser }: IContext) => {
-    if (!authUser) {
-      throw new Error("Unauthorized");
-    }
-
-    try {
-      const newPost = await prisma.post.create({
-        data: {
-          ...args,
-          authorId: authUser.userId,
-        },
-      });
-
-      return {
-        message: "Post created successfully",
-        post: newPost,
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-    }
-  },
+  ...postResolvers,
 };
